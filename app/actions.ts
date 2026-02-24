@@ -55,6 +55,37 @@ export async function addMovie(formData: FormData) {
     return { success: true };
 }
 
+export async function updateMovie(id: string, formData: FormData) {
+    const title = formData.get("title") as string;
+    const rating = Number(formData.get("rating"));
+    const review = formData.get("review") as string;
+
+    // Use the provided date, fallback to current time
+    const watchDate = formData.get("watched_at") as string;
+    const watched_at = watchDate ? new Date(watchDate).toISOString() : new Date().toISOString();
+
+    const poster_url = formData.get("poster_url") as string;
+
+    const { error } = await supabase
+        .from("movies")
+        .update({
+            title,
+            rating,
+            review: review || null,
+            watched_at,
+            poster_url: poster_url || null
+        })
+        .eq("id", id);
+
+    if (error) {
+        console.error("Error updating movie:", error);
+        return { error: error.message };
+    }
+
+    revalidatePath("/");
+    return { success: true };
+}
+
 export async function deleteMovie(id: string) {
     const { error } = await supabase
         .from("movies")
