@@ -1,5 +1,4 @@
-"use server";
-
+'use server'
 import { supabase } from "@/utils/supabase";
 import { revalidatePath } from "next/cache";
 
@@ -7,6 +6,7 @@ export type Movie = {
     id: string;
     title: string;
     rating: number;
+    genre?: string | null;
     review?: string | null;
     watched_at: string;
     poster_url?: string | null;
@@ -27,10 +27,10 @@ export async function getMovies(): Promise<Movie[]> {
 
 export async function addMovie(formData: FormData) {
     const title = formData.get("title") as string;
-    const rating = Number(formData.get("rating"));
+    const rating = parseFloat(Number(formData.get("rating")).toFixed(1));
+    const genre = formData.get("genre") as string;
     const review = formData.get("review") as string;
 
-    // Date formatting if watching today, otherwise the user can provide it
     const watchDate = formData.get("watched_at") as string;
     const watched_at = watchDate ? new Date(watchDate).toISOString() : new Date().toISOString();
 
@@ -41,6 +41,7 @@ export async function addMovie(formData: FormData) {
         .insert([{
             title,
             rating,
+            genre: genre || null,
             review: review || null,
             watched_at,
             poster_url: poster_url || null
@@ -57,10 +58,10 @@ export async function addMovie(formData: FormData) {
 
 export async function updateMovie(id: string, formData: FormData) {
     const title = formData.get("title") as string;
-    const rating = Number(formData.get("rating"));
+    const rating = parseFloat(Number(formData.get("rating")).toFixed(1));
+    const genre = formData.get("genre") as string;
     const review = formData.get("review") as string;
 
-    // Use the provided date, fallback to current time
     const watchDate = formData.get("watched_at") as string;
     const watched_at = watchDate ? new Date(watchDate).toISOString() : new Date().toISOString();
 
@@ -71,6 +72,7 @@ export async function updateMovie(id: string, formData: FormData) {
         .update({
             title,
             rating,
+            genre: genre || null,
             review: review || null,
             watched_at,
             poster_url: poster_url || null
