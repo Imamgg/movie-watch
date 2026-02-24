@@ -5,9 +5,7 @@ export function Header() {
     return (
         <header className="fixed top-0 w-full z-50 glass shadow-lg px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center backdrop-blur-md">
             <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-1.5 sm:p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg sm:rounded-xl shadow-lg shadow-purple-500/30">
-                    <Film className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
+                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
                 <h1 className="text-lg sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-400 dark:to-pink-300">
                     LK21 Watch
                 </h1>
